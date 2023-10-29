@@ -4,10 +4,6 @@ import {
   type LoaderFunctionArgs, 
   type MetaFunction } 
   from "@remix-run/node";
-import { 
-  Form, 
-  Outlet, 
-  useLoaderData } from "@remix-run/react";
 import authenticator from "~/services/auth.server";
 
 export const meta: MetaFunction = () => {
@@ -38,14 +34,3 @@ export const action = async ({request}: ActionFunctionArgs) => {
     }
   }
 }
-
-const MainLayout = () => {
-  const {user} = useLoaderData<typeof loader>()
-  
-  return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-    </div>
-  );
-}
-
-export default MainLayout
