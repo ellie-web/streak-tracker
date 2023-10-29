@@ -1,5 +1,7 @@
 import type { ActionFunction, LoaderFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { Form, Link } from "@remix-run/react";
+import Input from "~/components/Input";
+import Container from "~/components/UI/Container";
 import authenticator from "~/services/auth.server";
 
 export const loader: LoaderFunction = async (args: LoaderFunctionArgs) => {
@@ -20,19 +22,23 @@ export const action: ActionFunction = async ({request}) => {
 const LoginPage = () => {
   return (
     <Form method="post">
-      <h1>Sign in</h1>
+      <Container className="pt-5 flex flex-col h-screen">
+        <h1 className="text-4xl mb-3">Sign in</h1>
 
-      <p>Don't have an account? <Link to='/registration'>Sign up</Link></p>
+        <p className="text-xs mb-4 text-slate-400">Don't have an account? <Link className="text-blue-400 underline" to='/registration'>Sign up</Link></p>
 
-      <label htmlFor="name">Name</label>
-      <input type="text" name="name" id="name"/>
+        {/* <label htmlFor="name">Name</label> */}
+        {/* <input type="text" name="name" id="name"/> */}
+        <Input className="mb-4" type="text" name="name" id="name" placeholder="Name" />
 
-      <label htmlFor="password">Password</label>
-      <input type="password" name="password" id="password"/>
+        {/* <label htmlFor="password">Password</label> */}
+        {/* <input type="password" name="password" id="password"/> */}
+        <Input className="mb-6" type="password" name="password" id="password" placeholder="Password" />
 
-      <button type="submit">
-        Sign in
-      </button>
+        <button className="rounded-lg bg-blue-400 text-white px-5 py-2" type="submit">
+          Sign in
+        </button>
+      </Container>
     </Form>
   )
 }
