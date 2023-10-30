@@ -1,7 +1,7 @@
-import { ArrowRightOnRectangleIcon, CheckIcon, ClipboardDocumentListIcon } from "@heroicons/react/24/solid";
+import { ArrowRightOnRectangleIcon, CheckIcon, ListBulletIcon } from "@heroicons/react/24/solid";
 import { Button } from "@mui/base";
 import { json} from "@remix-run/node";
-import type { ActionFunctionArgs, type LoaderFunctionArgs } from "@remix-run/node";
+import { type ActionFunctionArgs, type LoaderFunctionArgs } from "@remix-run/node";
 
 import { Form, Link, useLoaderData } from "@remix-run/react";
 import Container from "~/components/UI/Container";
@@ -9,7 +9,7 @@ import authenticator from "~/services/auth.server";
 
 export const loader = async({request}: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: '/login',
+    failureRedirect: '/sign-in',
   })
   return json({user})
 }
@@ -21,7 +21,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
   switch(action) {
     case 'logout': {
       return await authenticator.logout(request, {
-        redirectTo: '/login'
+        redirectTo: '/sign-in'
       })
     }
   }
@@ -65,7 +65,7 @@ const Dashboard = () => {
 
       <div className="mt-auto w-full flex justify-between items-center py-4">
         <Link to='/tasks'>
-          <ClipboardDocumentListIcon className="w-8"/>
+          <ListBulletIcon className="w-8"/>
         </Link>
 
         <Button className="

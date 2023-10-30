@@ -1,6 +1,8 @@
 import type { ActionFunction, LoaderFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { Form, Link } from "@remix-run/react";
 import bcrypt from 'bcryptjs'
+import Input from "~/components/Input";
+import Container from "~/components/UI/Container";
 import { prisma } from "~/db.server";
 import authenticator from "~/services/auth.server";
 
@@ -37,27 +39,47 @@ export const action: ActionFunction = async ({request}) => {
 
   return await authenticator.authenticate('form', request, {
     successRedirect: '/',
-    failureRedirect: '/login',
+    failureRedirect: '/sign-in',
     context: {formData: form}
   })
 }
 
-const RegistrationPage = () => {
+const SignUp = () => {
   return (
     <Form method="post">
-      <h1>Sign up</h1>
+      <Container className="pt-5 flex flex-col h-screen">
+        <h1 className="text-4xl mb-3">Sign up</h1>
 
-      <p>Already have an account? <Link to='/login'>Sign in</Link></p>
-      
-      <label htmlFor="name">Name</label>
-      <input type="text" name="name" id="name"/>
+        <p 
+          className="text-xs mb-4 text-slate-400">
+            Already have an account?&nbsp; 
+            <Link className="text-blue-400 underline" to='/sign-in'>
+              Sign in
+            </Link>
+        </p>
 
-      <label htmlFor="password">Password</label>
-      <input type="password" name="password" id="password"/>
+        <Input 
+          className="mb-4" 
+          type="text" 
+          name="name" 
+          id="name" 
+          placeholder="Name" />
 
-      <button type="submit">Sign up</button>
+        <Input 
+          className="mb-6" 
+          type="password" 
+          name="password" 
+          id="password" 
+          placeholder="Password" />
+
+        <button 
+          className="rounded-lg bg-blue-400 text-white px-5 py-2" 
+          type="submit">
+          Sign up
+        </button>
+      </Container>
     </Form>
   )
 }
 
-export default RegistrationPage
+export default SignUp

@@ -15,7 +15,7 @@ export const meta: MetaFunction = () => {
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: '/login',
+    failureRedirect: '/sign-in',
     successRedirect: '/dashboard'
   })
 
@@ -29,7 +29,7 @@ export const action = async ({request}: ActionFunctionArgs) => {
   switch(action) {
     case 'logout': {
       return await authenticator.logout(request, {
-        redirectTo: '/login'
+        redirectTo: '/sign-in'
       })
     }
   }
