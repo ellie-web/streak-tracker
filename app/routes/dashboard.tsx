@@ -7,7 +7,7 @@ import { Form, Link, useLoaderData } from "@remix-run/react";
 import Container from "~/components/UI/Container";
 import authenticator from "~/services/auth.server";
 
-export const loader = async({request}: LoaderFunctionArgs) => {
+export const loader = async ({request}: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: '/sign-in',
   })
@@ -64,7 +64,7 @@ const Dashboard = () => {
       </div>
 
       <div className="mt-auto w-full flex justify-between items-center py-4">
-        <Link to='/tasks'>
+        <Link to='/goals'>
           <ListBulletIcon className="w-8"/>
         </Link>
 

@@ -16,7 +16,7 @@ export const meta: MetaFunction = () => {
 export const loader = async ({request}: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: '/sign-in',
-    successRedirect: '/dashboard'
+    successRedirect: '/goals'
   })
 
   return json({user})

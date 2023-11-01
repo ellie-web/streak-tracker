@@ -6,7 +6,7 @@ import authenticator from "~/services/auth.server";
 
 export const loader: LoaderFunction = async (args: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(args.request, {
-    successRedirect: '/dashboard'
+    successRedirect: '/goals'
   })
 
   return {user}
@@ -14,7 +14,7 @@ export const loader: LoaderFunction = async (args: LoaderFunctionArgs) => {
 
 export const action: ActionFunction = async ({request}) => {
   await authenticator.authenticate('form', request, {
-    successRedirect: '/dashboard',
+    successRedirect: '/goals',
   })
 }
 

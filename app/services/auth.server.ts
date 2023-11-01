@@ -4,13 +4,10 @@ import { sessionStorage } from "~/services/session.server"
 import { FormStrategy } from "remix-auth-form"
 import bcrypt from "bcryptjs"
 import { prisma } from "~/db.server"
+import type { UserPublic } from "~/types"
 
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
-type UserPublic = {
-  id: number
-  name: string
-}
 const authenticator = new Authenticator<UserPublic>(sessionStorage)
 
 const formStrategy = new FormStrategy(async ({form}) => {
