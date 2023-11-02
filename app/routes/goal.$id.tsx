@@ -1,13 +1,16 @@
-import { ArrowRightOnRectangleIcon, CheckIcon, ListBulletIcon } from "@heroicons/react/24/solid";
+import { ArrowRightOnRectangleIcon, CheckIcon, HandThumbUpIcon, ListBulletIcon } from "@heroicons/react/24/solid";
 import { Button } from "@mui/base";
 import { json, redirect} from "@remix-run/node";
 import { type ActionFunctionArgs, type LoaderFunctionArgs } from "@remix-run/node";
 
-import { Form, Link, useActionData, useFetcher, useLoaderData } from "@remix-run/react";
+import { Form, Link, useFetcher, useLoaderData } from "@remix-run/react";
+import { useEffect, useState } from "react";
 import Container from "~/components/UI/Container";
 import { checkInWithGoal, getGoal } from "~/models/goal.server";
 import { getLastStreak } from "~/models/streak.server";
 import authenticator from "~/services/auth.server";
+import { getDays } from "~/utils/geyDays";
+import { isSameDay } from "~/utils/isSameDay";
 
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request, {
@@ -37,10 +40,51 @@ export const action = async ({request}: ActionFunctionArgs) => {
   }
 }
 
+type Stats = {
+  best: number
+  percent: number
+  daysCompleted: number
+}
+
 const GoalPage = () => {
   const {user, goal, lastStreak} = useLoaderData<typeof loader>()
-  const streak = useActionData<typeof action>()
   const fetcher = useFetcher()
+
+  // get checked in state
+  const [isChecked, setIsChecked] = useState<Boolean>(false)
+  useEffect(() => {
+    if (!lastStreak) return setIsChecked(false)
+    setIsChecked(isSameDay(new Date(lastStreak.lastCheckIn), new Date()))
+  }, [lastStreak])
+
+  // get stats
+  const [stats, setStats] = useState<Stats>({
+    best: 0,
+    percent: 0,
+    daysCompleted: 0
+  })
+  useEffect(() => {
+    const daysCompleted = goal.streaks.reduce((accumulator, current) => {
+      // TODO: move getting days to utils
+      const days = getDays(new Date(current.lastCheckIn), new Date(current.start))
+      return accumulator + days
+    }, 0)
+
+    const bestStreakObject = goal.streaks.sort((a, b) => {
+      return (new Date(b.lastCheckIn).getTime() - new Date(b.start).getTime())  - (new Date(a.lastCheckIn).getTime() - new Date(a.start).getTime())
+    })[0]
+
+    const bestStreakDays = getDays(new Date(bestStreakObject.lastCheckIn), new Date(bestStreakObject.start))
+
+    const daysSinceStart = getDays(new Date(), new Date(goal.start))
+    const percent = ~~((daysCompleted / daysSinceStart) * 100)
+
+    setStats({
+      best: bestStreakDays,
+      percent,
+      daysCompleted
+    })
+  }, [goal])
 
   const handleCheckIn = () => {
     const checkInDate = new Date()
@@ -87,22 +131,20 @@ const GoalPage = () => {
 
       <div className="mt-5 grid grid-cols-3">
         <div className="text-center">
-          <div className="text-2xl font-semibold">12</div>
+          <div className="text-2xl font-semibold">{stats.best}</div>
           <div className="text-sm">Best streak</div>
         </div>
 
         <div className="text-center">
-          <div className="text-2xl font-semibold">50%</div>
+          <div className="text-2xl font-semibold">{stats.percent}%</div>
           <div className="text-sm">All time</div>
         </div>
 
         <div className="text-center">
-          <div className="text-2xl font-semibold">300</div>
+          <div className="text-2xl font-semibold">{stats.daysCompleted}</div>
           <div className="text-sm">Days completed</div>
         </div>
       </div>
-
-      {streak && <div>update {streak?.lastCheckIn}</div>}
 
       <div className="mt-auto w-full flex justify-between items-center py-4">
         <Link to='/goals'>
@@ -111,6 +153,7 @@ const GoalPage = () => {
 
         <Button 
           onClick={handleCheckIn}
+          disabled={!!isChecked}
           className="
             rounded-full 
             bg-green-400 
@@ -121,8 +164,15 @@ const GoalPage = () => {
             flex-col 
             items-center 
             justify-center">
-          <CheckIcon className="w-10 "/>
-          <span className="text-xs">Check in</span>
+          
+          {!isChecked ? <>
+            <CheckIcon className="w-10"/>
+            <span className="text-xs">Check in</span>
+          </> 
+          : <>
+            <HandThumbUpIcon className="w-10"/>
+            <span>Good job!</span>
+          </>}
         </Button>
 
         <Form method="post">
