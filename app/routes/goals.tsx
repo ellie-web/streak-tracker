@@ -1,6 +1,5 @@
 import { ArrowRightOnRectangleIcon, HomeIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid"
 import { Button } from "@mui/base"
-import { Streak } from "@prisma/client";
 import { json, redirect} from "@remix-run/node";
 import { type LoaderFunctionArgs } from "@remix-run/node";
 import { Form, Link, Outlet, useLoaderData } from "@remix-run/react"
