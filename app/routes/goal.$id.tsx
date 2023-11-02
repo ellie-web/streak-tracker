@@ -11,6 +11,7 @@ import { getLastStreak } from "~/models/streak.server";
 import authenticator from "~/services/auth.server";
 import { getDays } from "~/utils/geyDays";
 import { isSameDay } from "~/utils/isSameDay";
+import dayjs from "dayjs";
 
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request, {
@@ -127,7 +128,7 @@ const GoalPage = () => {
         days!
       </div>
 
-      <div className="mt-12 text-center text-lg">Goal started on {goal.start}</div>
+      <div className="mt-12 text-center text-lg">Goal started on {dayjs(goal.start).format('DD MMM YYYY, HH:mm')}</div>
 
       <div className="mt-5 grid grid-cols-3">
         <div className="text-center">
