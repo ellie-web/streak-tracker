@@ -2,7 +2,6 @@ import { ArrowRightOnRectangleIcon, CheckIcon, HandThumbUpIcon, ListBulletIcon }
 import { Button } from "@mui/base";
 import { json, redirect} from "@remix-run/node";
 import { type ActionFunctionArgs, type LoaderFunctionArgs } from "@remix-run/node";
-
 import { Form, Link, useFetcher, useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import Container from "~/components/UI/Container";
@@ -65,10 +64,11 @@ const GoalPage = () => {
     daysCompleted: 0
   })
   useEffect(() => {
+    if (goal.streaks.length === 0) return
     const daysCompleted = goal.streaks.reduce((accumulator, current) => {
       // TODO: move getting days to utils
       const days = getDays(new Date(current.lastCheckIn), new Date(current.start))
-      return accumulator + days
+      return accumulator + (days === 0 ? 1 : days)
     }, 0)
 
     const bestStreakObject = goal.streaks.sort((a, b) => {
@@ -81,11 +81,11 @@ const GoalPage = () => {
     const percent = ~~((daysCompleted / daysSinceStart) * 100)
 
     setStats({
-      best: bestStreakDays,
+      best: bestStreakDays === 0 ? 1 : bestStreakDays,
       percent,
       daysCompleted
     })
-  }, [goal])
+  }, [goal, lastStreak])
 
   const handleCheckIn = () => {
     const checkInDate = new Date()
