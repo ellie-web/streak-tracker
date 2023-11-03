@@ -5,8 +5,6 @@ export type UserPublic = {
   name: string
 }
 
-export type GoalPublic = Goal & {currentStreak: number}
-
 export type TypographyProps = {
   children: React.ReactNode
   className?: string
