@@ -4,13 +4,15 @@ import { json, redirect} from "@remix-run/node";
 import { type ActionFunctionArgs, type LoaderFunctionArgs } from "@remix-run/node";
 import { Form, Link, useFetcher, useLoaderData } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import Container from "~/components/UI/Container";
+import Container from "~/components/UI/Layout/Container";
 import { checkInWithGoal, getGoal } from "~/models/goal.server";
 import { getLastStreak } from "~/models/streak.server";
 import authenticator from "~/services/auth.server";
 import { getDays } from "~/utils/geyDays";
 import { isSameDay } from "~/utils/isSameDay";
 import dayjs from "dayjs";
+import H1 from "~/components/UI/Typography/H1";
+import H2 from "~/components/UI/Typography/H2";
 
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request, {
@@ -110,11 +112,9 @@ const GoalPage = () => {
   }
 
   return (
-    <Container className="pt-5 flex flex-col h-screen">
-      <h1 className="text-2xl text-center mb-2">{user.name}, you are</h1>
-      <p className="text-center mb-4">
-        <span className="text-3xl">{goal.name}</span>
-      </p>
+    <Container className="pt-5 flex flex-col h-screen dark:text-white">
+      <H2>{user.name}, you are</H2>
+      <H1>{goal.name}</H1>
       <div className="flex justify-center items-center text-2xl">
         for
         <div className="mx-3 font-extrabold text-green-400 text-4xl">
@@ -171,7 +171,7 @@ const GoalPage = () => {
           </>}
         </Button>
 
-        <Form method="post">
+        <Form method="post" action="/dashboard">
           <Button className="flex" type="submit" value="logout" name="action">
             <ArrowRightOnRectangleIcon className="w-8"/>
           </Button>

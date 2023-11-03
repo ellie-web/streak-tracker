@@ -2,6 +2,7 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import { Modal as BaseModal, Button } from "@mui/base";
 import type { ModalProps  } from "@mui/base";
 import React from "react";
+import H2 from "./UI/Typography/H2";
 
 type _ModalProps = ModalProps & {title: string}
 
@@ -19,13 +20,13 @@ const Modal = React.forwardRef((props: _ModalProps, ref: React.ForwardedRef<HTML
       }}
       open={props.open} 
       onClose={props.onClose}>
-        <div className="z-0 bg-white rounded-lg relative p-6">
+        <div className="z-0 bg-white dark:bg-slate-900 rounded-lg relative p-6">
           <Button
             className="absolute top-2 right-2" 
             onClick={(e) => props.onClose(e, 'escapeKeyDown')}>
             <XMarkIcon className="w-6"/>
           </Button>
-          <h2 className="text-center text-2xl mb-4">{props.title}</h2>
+          <H2 className="mb-4">{props.title}</H2>
           {props.children}
         </div>
       </BaseModal>)

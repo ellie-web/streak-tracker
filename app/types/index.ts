@@ -6,3 +6,8 @@ export type UserPublic = {
 }
 
 export type GoalPublic = Goal & {currentStreak: number}
+
+export type TypographyProps = {
+  children: React.ReactNode
+  className?: string
+}

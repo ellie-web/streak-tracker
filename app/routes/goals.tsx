@@ -3,7 +3,8 @@ import { Button } from "@mui/base"
 import { json, redirect} from "@remix-run/node";
 import { type LoaderFunctionArgs } from "@remix-run/node";
 import { Form, Link, Outlet, useLoaderData } from "@remix-run/react"
-import Container from "~/components/UI/Container"
+import Container from "~/components/UI/Layout/Container"
+import H1 from "~/components/UI/Typography/H1";
 import { getAllGoals } from "~/models/goal.server"
 import authenticator from "~/services/auth.server"
 import { getDays } from "~/utils/geyDays";
@@ -43,11 +44,11 @@ const Goals = () => {
     return isCurrent ? days : 0
   }
   return (
-    <Container className="pt-5 flex flex-col h-screen">
+    <Container className="pt-5 flex flex-col h-screen dark:text-white">
       {/* <h1 className="text-4xl text-center mb-2">Hi {user.name}!</h1> */}
       
       {goals && <>
-        <h2 className="text-3xl text-center mb-4">Your goals</h2>
+        <H1 className="text-3xl">Your goals</H1>
         {goals.length === 0 && <div className="text-center">No goals yet!</div>}
         {goals.map((goal) => {
           return (

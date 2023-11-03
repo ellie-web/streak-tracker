@@ -9,6 +9,7 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import styles from "./tailwind.css";
+import DarkModeSwitch from "./components/DarkModeSwitch";
 
 export const links: LinksFunction = () => [
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
@@ -28,6 +29,10 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <script src="noflash.js"></script>
+        <header className="fixed flex justify-end w-screen top-0 left-0">
+          <DarkModeSwitch/>
+        </header>
         <Outlet />
         <ScrollRestoration />
         <Scripts />

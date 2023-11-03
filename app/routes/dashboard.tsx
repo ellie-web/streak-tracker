@@ -4,7 +4,7 @@ import { json} from "@remix-run/node";
 import { type ActionFunctionArgs, type LoaderFunctionArgs } from "@remix-run/node";
 
 import { Form, Link, useLoaderData } from "@remix-run/react";
-import Container from "~/components/UI/Container";
+import Container from "~/components/UI/Layout/Container";
 import authenticator from "~/services/auth.server";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {

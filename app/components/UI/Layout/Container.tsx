@@ -10,7 +10,7 @@ const Container = React.forwardRef((
     {children, className, id}: ContainerProps, 
     ref: React.ForwardedRef<HTMLDivElement>) => {
     return (
-        <div id={id} ref={ref} className={twMerge('px-6 w-full max-w-[768px] mx-auto', className)}>
+        <div id={id} ref={ref} className={twMerge('px-6 w-full max-w-[768px] mx-auto dark:bg-slate-900', className)}>
             {children}
         </div>
     )

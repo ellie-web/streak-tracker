@@ -1,6 +1,6 @@
 import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "@remix-run/node"
 import { Form, Link, useLoaderData } from "@remix-run/react"
-import Container from "~/components/UI/Container"
+import Container from "~/components/UI/Layout/Container"
 import authenticator from "~/services/auth.server"
 import Input from "~/components/Input"
 import { useState } from "react"
