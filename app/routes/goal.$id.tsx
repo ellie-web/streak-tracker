@@ -66,18 +66,17 @@ const GoalPage = () => {
   useEffect(() => {
     if (goal.streaks.length === 0) return
     const daysCompleted = goal.streaks.reduce((accumulator, current) => {
-      // TODO: move getting days to utils
       const days = getDays(new Date(current.lastCheckIn), new Date(current.start))
-      return accumulator + (days === 0 ? 1 : days)
-    }, 0)
+      return accumulator + days
+    }, 1)
 
     const bestStreakObject = goal.streaks.sort((a, b) => {
       return (new Date(b.lastCheckIn).getTime() - new Date(b.start).getTime())  - (new Date(a.lastCheckIn).getTime() - new Date(a.start).getTime())
     })[0]
 
-    const bestStreakDays = getDays(new Date(bestStreakObject.lastCheckIn), new Date(bestStreakObject.start))
+    const bestStreakDays = getDays(new Date(bestStreakObject.lastCheckIn), new Date(bestStreakObject.start)) + 1
 
-    const daysSinceStart = getDays(new Date(), new Date(goal.start))
+    const daysSinceStart = getDays(new Date(), new Date(goal.start)) + 1
     const percent = ~~((daysCompleted / daysSinceStart) * 100)
 
     setStats({
@@ -107,11 +106,7 @@ const GoalPage = () => {
   // TODO: move to utils
   const getStreak = (): number => {
     if (!lastStreak) return 0
-    if (lastStreak.start === lastStreak.lastCheckIn) return 1
-    const difference = new Date(lastStreak.lastCheckIn).getTime() - new Date(lastStreak.start).getTime()
-    const days = Math.ceil(difference / (1000 * 3600 * 24))
-
-    return days
+    return getDays(new Date(lastStreak.lastCheckIn), new Date(lastStreak.start)) + 1
   }
 
   return (

@@ -6,6 +6,7 @@ import { Form, Link, Outlet, useLoaderData } from "@remix-run/react"
 import Container from "~/components/UI/Container"
 import { getAllGoals } from "~/models/goal.server"
 import authenticator from "~/services/auth.server"
+import { getDays } from "~/utils/geyDays";
 import { isDateYesterday } from "~/utils/isDateYesterday";
 import { isSameDay } from "~/utils/isSameDay";
 
@@ -33,16 +34,8 @@ const Goals = () => {
     const lastStreak = streaks.sort((a, b) => b.lastCheckIn.getTime() - a.lastCheckIn.getTime())[0]
 
     if (!lastStreak) return 0
-    // if (lastStreak.start === lastStreak.lastCheckIn) return 1
-    const difference = new Date(lastStreak.lastCheckIn).getTime() - new Date(lastStreak.start).getTime()
 
-
-    let days = 0
-    // if start = lastCheckIn -> freshly created streak by the first check in
-    if (lastStreak.start === lastStreak.lastCheckIn) {
-      days = 1
-    }
-    else days = Math.ceil(difference / (1000 * 3600 * 24))
+    const days = getDays(new Date(lastStreak.lastCheckIn), new Date(lastStreak.start)) + 1
 
     // check if the streak is current
     const isCurrent = isDateYesterday(new Date(lastStreak.lastCheckIn)) || isSameDay(new Date(lastStreak.lastCheckIn), new Date())
