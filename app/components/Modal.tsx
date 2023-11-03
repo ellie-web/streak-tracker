@@ -9,7 +9,13 @@ type _ModalProps = ModalProps & {title: string}
 const Modal = React.forwardRef((props: _ModalProps, ref: React.ForwardedRef<HTMLElement>) => {
   return (
     <BaseModal 
-      className="flex justify-center items-center rounded-lg fixed z-50 inset-0"
+      className="
+        flex justify-center items-center 
+        rounded-lg 
+        fixed 
+        z-50 
+        inset-0
+        dark:text-white"
       slots={{
         backdrop: 'div'
       }}
@@ -20,7 +26,7 @@ const Modal = React.forwardRef((props: _ModalProps, ref: React.ForwardedRef<HTML
       }}
       open={props.open} 
       onClose={props.onClose}>
-        <div className="z-0 bg-white dark:bg-slate-900 rounded-lg relative p-6">
+        <div className="z-0 bg-white dark:bg-slate-800 rounded-lg relative p-6">
           <Button
             className="absolute top-2 right-2" 
             onClick={(e) => props.onClose(e, 'escapeKeyDown')}>
