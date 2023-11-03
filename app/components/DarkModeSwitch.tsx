@@ -23,7 +23,7 @@ const DarkModeSwitch = () => {
                 `absolute block w-full h-full transition rounded-full border border-solid outline-none border-slate-300 dark:border-gray-700 shadow-[inset_0_1_1_rgb(0_0_0_/_0.05)] dark:shadow-[inset_0_1_1_rgb(0_0_0_/_0.5)] focus:shadow-purple-200 dark:focus:shadow-purple-600 
                 ${
                   ownerState.checked
-                    ? 'bg-purple-500 border-none'
+                    ? 'bg-green-500 border-none'
                     : 'bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800'
                 }`
               ),
