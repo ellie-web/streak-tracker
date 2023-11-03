@@ -1,5 +1,3 @@
-import type { Goal } from "@prisma/client"
-
 export type UserPublic = {
   id: number
   name: string
