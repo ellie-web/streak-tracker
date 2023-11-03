@@ -1,15 +1,13 @@
-import { ArrowRightOnRectangleIcon, HomeIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid"
+import { ArrowRightOnRectangleIcon, HomeIcon, PlusIcon } from "@heroicons/react/24/solid"
 import { Button } from "@mui/base"
 import { json, redirect} from "@remix-run/node";
 import { type LoaderFunctionArgs } from "@remix-run/node";
 import { Form, Link, Outlet, useLoaderData } from "@remix-run/react"
+import GoalItem from "~/components/GoalItem";
 import Container from "~/components/UI/Layout/Container"
 import H1 from "~/components/UI/Typography/H1";
 import { getAllGoals } from "~/models/goal.server"
 import authenticator from "~/services/auth.server"
-import { getDays } from "~/utils/geyDays";
-import { isDateYesterday } from "~/utils/isDateYesterday";
-import { isSameDay } from "~/utils/isSameDay";
 
 export const loader = async ({request}: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request, {
@@ -24,53 +22,18 @@ export const loader = async ({request}: LoaderFunctionArgs) => {
       return redirect('/goals/add')
     }
   }
-  return json({user, goals})
+  return json({goals})
 }
 
 const Goals = () => {
-  const {user, goals} = useLoaderData<typeof loader>()
-
-  // TODO: move to utils
-  const getCurrentStreak = (streaks: any[]) => {
-    const lastStreak = streaks.sort((a, b) => b.lastCheckIn.getTime() - a.lastCheckIn.getTime())[0]
-
-    if (!lastStreak) return 0
-
-    const days = getDays(new Date(lastStreak.lastCheckIn), new Date(lastStreak.start)) + 1
-
-    // check if the streak is current
-    const isCurrent = isDateYesterday(new Date(lastStreak.lastCheckIn)) || isSameDay(new Date(lastStreak.lastCheckIn), new Date())
-    
-    return isCurrent ? days : 0
-  }
+  const {goals} = useLoaderData<typeof loader>()
   return (
-    <Container className="pt-5 flex flex-col h-screen dark:text-white">
-      {/* <h1 className="text-4xl text-center mb-2">Hi {user.name}!</h1> */}
-      
+    <Container className="pt-5 flex flex-col h-screen dark:text-white"> 
       {goals && <>
         <H1 className="text-3xl">Your goals</H1>
         {goals.length === 0 && <div className="text-center">No goals yet!</div>}
         {goals.map((goal) => {
-          return (
-            <div 
-              key={goal.id} 
-              className="bg-slate-200 rounded-lg flex justify-between items-center mb-2">
-              
-              <Link to={`/goal/${goal.id}`} className="w-full h-full flex justify-between items-center py-2 pl-2">
-                <span>{goal.name}</span>
-
-                <span>Current streak: {getCurrentStreak(goal.streaks)}</span>
-              </Link>
-
-              <div className="py-2 pr-2">
-                <Link 
-                  className="flex text-red-600" 
-                  type="button" 
-                  to={`delete/${goal.id}`}>
-                  <TrashIcon className="w-8"/>
-                </Link>
-              </div>
-            </div>)
+          return <GoalItem key={goal.id} goal={goal}/>
         })}
       </>}
 
