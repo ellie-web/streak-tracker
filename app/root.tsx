@@ -29,7 +29,7 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <script src="noflash.js"></script>
+        <script src="/noflash.js"></script>
         <header className="fixed flex justify-end w-screen top-0 left-0">
           <DarkModeSwitch/>
         </header>
