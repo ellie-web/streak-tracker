@@ -13,6 +13,7 @@ import { isSameDay } from "~/utils/isSameDay";
 import dayjs from "dayjs";
 import H1 from "~/components/UI/Typography/H1";
 import H2 from "~/components/UI/Typography/H2";
+import useCurrentStreak from "~/utils/useCurrentStreak";
 
 export const loader = async ({request, params}: LoaderFunctionArgs) => {
   const user = await authenticator.isAuthenticated(request, {
@@ -105,11 +106,7 @@ const GoalPage = () => {
     )
   }
 
-  // TODO: move to utils
-  const getStreak = (): number => {
-    if (!lastStreak) return 0
-    return getDays(new Date(lastStreak.lastCheckIn), new Date(lastStreak.start)) + 1
-  }
+  const currentStreak = useCurrentStreak(goal.streaks)
 
   return (
     <Container className="pt-5 flex flex-col h-screen dark:text-white">
@@ -118,7 +115,7 @@ const GoalPage = () => {
       <div className="flex justify-center items-center text-2xl">
         for
         <div className="mx-3 font-extrabold text-green-400 text-4xl">
-          {getStreak()}
+          {currentStreak}
         </div>
         days!
       </div>

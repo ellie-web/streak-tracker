@@ -1,27 +1,11 @@
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid"
 import type { Goal, Streak } from "@prisma/client"
 import { Link } from "@remix-run/react"
-import { useMemo } from "react"
 import type { Jsonify } from "type-fest"
-import { getDays } from "~/utils/geyDays"
-import { isDateYesterday } from "~/utils/isDateYesterday"
-import { isSameDay } from "~/utils/isSameDay"
+import useCurrentStreak from "~/utils/useCurrentStreak"
 
 const GoalItem = ({goal}: {goal: Jsonify<Goal & {streaks: Streak[]}>}) => {
-  const currentStreak = useMemo(() => {
-    const lastStreak = goal.streaks.sort((a, b) => new Date(b.lastCheckIn).getTime() - new Date(a.lastCheckIn).getTime())[0]
-
-    if (!lastStreak) return 0
-
-    const days = getDays(new Date(lastStreak.lastCheckIn), new Date(lastStreak.start)) + 1
-
-    // check if the streak is current
-    const isCurrent = 
-      isDateYesterday(new Date(lastStreak.lastCheckIn)) || 
-      isSameDay(new Date(lastStreak.lastCheckIn), new Date())
-    
-    return isCurrent ? days : 0
-  }, [goal.streaks])
+  const currentStreak = useCurrentStreak(goal.streaks)
   return (
     <div 
       key={goal.id} 
