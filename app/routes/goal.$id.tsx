@@ -69,9 +69,9 @@ const GoalPage = () => {
   useEffect(() => {
     if (goal.streaks.length === 0) return
     const daysCompleted = goal.streaks.reduce((accumulator, current) => {
-      const days = getDays(new Date(current.lastCheckIn), new Date(current.start))
+      const days = getDays(new Date(current.lastCheckIn), new Date(current.start)) + 1
       return accumulator + days
-    }, 1)
+    }, 0)
 
     const bestStreakObject = goal.streaks.sort((a, b) => {
       return (new Date(b.lastCheckIn).getTime() - new Date(b.start).getTime())  - (new Date(a.lastCheckIn).getTime() - new Date(a.start).getTime())
